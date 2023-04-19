@@ -109,7 +109,7 @@ class MainActivity : BaseActivity(), MainView {
         AnimatorSet().apply {
             play(xAnimator).with(yAnimator).with(alphaAnimator).with(scaleXAnimator).with(scaleYAnimator)
             addListener(object: AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     flContainer.removeView(viewToAnimate)
                 }
             })

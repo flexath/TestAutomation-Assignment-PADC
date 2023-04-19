@@ -6,7 +6,6 @@ import androidx.lifecycle.Transformations
 import com.zg.burgerjoint.data.model.BaseAppModel
 import com.zg.burgerjoint.data.model.BurgerModel
 import com.zg.burgerjoint.data.vos.BurgerVO
-import io.reactivex.Observable
 
 object BurgerModelImpl : BurgerModel, BaseAppModel() {
 
