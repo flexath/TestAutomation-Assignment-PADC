@@ -10,7 +10,7 @@ import com.zg.burgerjoint.mvp.views.MainView
 
 class MainPresenterImpl : MainPresenter, BaseAppPresenterImpl<MainView>() {
 
-    private val mBurgerModel = BurgerModelImpl
+    var mBurgerModel = BurgerModelImpl
 
     override fun onTapAddToCart(burger: BurgerVO, burgerImageView: ImageView) {
         mBurgerModel.addItemToCart(burger)
