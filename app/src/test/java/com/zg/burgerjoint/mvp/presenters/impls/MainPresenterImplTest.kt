@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.zg.burgerjoint.data.model.BurgerModel
 import com.zg.burgerjoint.data.model.impls.BurgerModelImpl
+import com.zg.burgerjoint.data.model.impls.MockBurgerModelImpl
 import com.zg.burgerjoint.data.vos.BurgerVO
 import com.zg.burgerjoint.dummy.getDummyBurgers
 import com.zg.burgerjoint.mvp.views.MainView
@@ -36,11 +37,11 @@ class MainPresenterImplTest {
         MockKAnnotations.init(this)
 
         BurgerModelImpl.init(ApplicationProvider.getApplicationContext())
-        mBurgerModel = BurgerModelImpl
+        mBurgerModel = MockBurgerModelImpl
 
         mPresenter = MainPresenterImpl()
         mPresenter.initPresenter(mView)
-        mPresenter.mBurgerModel = this.mBurgerModel as BurgerModelImpl
+        mPresenter.mBurgerModel = this.mBurgerModel
     }
 
     @Test
@@ -56,7 +57,7 @@ class MainPresenterImplTest {
         mPresenter.onTapAddToCart(tappedBurger,imageView)
 
         verify {
-            mView.animateAddBurgerToCart(tappedBurger,imageView)
+            mView.addBurgerToCart(tappedBurger,imageView)
         }
     }
 
@@ -65,7 +66,7 @@ class MainPresenterImplTest {
         mPresenter.onTapCart()
 
         verify {
-            mView.navigateToCartScreen()
+            mView.navigatetoCartScreen()
         }
     }
 
@@ -82,19 +83,18 @@ class MainPresenterImplTest {
         mPresenter.onTapBurger(tappedBurger,imageView)
 
         verify {
-            mView.navigateToBurgerDetailsScreenWithAnimation(tappedBurger.burgerId,imageView)
+            mView.navigateToBurgerDetailsScreen(tappedBurger.burgerId,imageView)
         }
     }
 
     @Test
     fun onUIReady_callDisplayBurgerList() {
-        val lifecycleOwner = mock(LifecycleOwner::class.java)
-        val lifecycleRegistry = LifecycleRegistry(lifecycleOwner)
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        val lifeCycleOwner = mock(LifecycleOwner::class.java)
+        val lifeCycleRegistry = LifecycleRegistry(lifeCycleOwner)
+        lifeCycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        `when`(lifeCycleOwner.lifecycle).thenReturn(lifeCycleRegistry)
 
-        `when`(lifecycleOwner.lifecycle).thenReturn(lifecycleRegistry)
-
-        mPresenter.onUIReady(lifecycleOwner)
+        mPresenter.onUIReady(lifeCycleOwner)
 
         verify {
             mView.displayBurgerList(getDummyBurgers())
